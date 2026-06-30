@@ -1,0 +1,73 @@
+-- Altera Memory Initialization File (MIF)
+
+DEPTH = 2048;
+WIDTH = 16;
+
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+
+CONTENT
+  BEGIN
+    000 : 082a; -- LOAD   Two
+    001 : 2029; -- ADD    One
+    002 : 2032; -- ADD    NegFive
+    003 : 3003; -- ADDI   3
+    004 : 37ff; -- ADDI   -1
+    005 : 282b; -- SUB    Three
+    006 : 2832; -- SUB    NegFive
+    007 : 103a; -- STORE  Temp         ; What value gets stored?
+    008 : 203a; -- ADD    Temp         ; What value is in AC now?
+    009 : 083a; -- LOAD   Temp         ; What value is in AC now?
+    00a : 1800; -- LOADI  0
+    00b : 4037; -- OR     LowByte
+    00c : 3835; -- AND    Bit2
+    00d : 4837; -- XOR    LowByte
+    00e : 5004; -- SHIFT  4
+    00f : 5014; -- SHIFT  -4
+    010 : 1800; -- LOADI  0
+    011 : 6013; -- JNEG   WrongJump    ; 0 is not negative
+    012 : 7015; -- JZERO  CheckJPOS
+    013 : 0839; -- LOAD   ErrCode      ; 0xEEEE in AC indicates an error
+    014 : 5813; -- JUMP   WrongJump    ; Infinite loop
+    015 : 1ff8; -- LOADI  -8
+    016 : 6813; -- JPOS   WrongJump    ; -8 is not positive
+    017 : 1801; -- LOADI  1
+    018 : 500f; -- SHIFT  15
+    019 : 6813; -- JPOS   WrongJump    ; -0 is not positive
+    01a : 5001; -- SHIFT  1
+    01b : 6813; -- JPOS   WrongJump    ; 0 is not positive
+    01c : 1808; -- LOADI  8
+    01d : 681f; -- JPOS   CheckJNZ     ; 8 IS positive, so...
+    01e : 5813; -- JUMP   WrongJump    ; if that jump fails, something is wrong
+    01f : 1800; -- LOADI  0
+    020 : 7813; -- JNZ    WrongJump    ; 0 is not not zero
+    021 : 1fff; -- LOADI  -1
+    022 : 7824; -- JNZ    Questions    ; -1 IS not zero, so...
+    023 : 5813; -- JUMP   WrongJump    ; if that jump fails, something is wrong
+    024 : 1b37; -- LOADI  &H1337       ; Why doesn't this operand work?
+    025 : 40ff; -- OR     255          ; Why doesn't AC get OR'd with 255 (0xFF)?
+    026 : 303a; -- ADDI   Temp         ; Why doesn't 2 (the value in Temp) get added?
+    027 : 0838; -- LOAD   Buzz
+    028 : 5828; -- JUMP   Finish       ; Infinite loop
+    029 : 0001; -- One:       DW   1
+    02a : 0002; -- Two:       DW   2
+    02b : 0003; -- Three:     DW   3
+    02c : 0004; -- Four:      DW   4
+    02d : 0005; -- Five:      DW   5
+    02e : ffff; -- NegOne:    DW  -1
+    02f : fffe; -- NegTwo:    DW  -2
+    030 : fffd; -- NegThree:  DW  -3
+    031 : fffc; -- NegFour:   DW  -4
+    032 : fffb; -- NegFive:   DW  -5
+    033 : 0001; -- Bit0:      DW  &B0001
+    034 : 0002; -- Bit1:      DW  &B0010
+    035 : 0004; -- Bit2:      DW  &B0100
+    036 : 0008; -- Bit3:      DW  &B1000
+    037 : 00ff; -- LowByte:   DW  &H00FF
+    038 : abee; -- Buzz:      DW  &HABEE
+    039 : eeee; -- ErrCode:   DW  &HEEEE
+    03a : 0000; -- Temp:      DW  0
+
+    [03b..7ff] : 0000; -- Empty memory
+
+  END;
